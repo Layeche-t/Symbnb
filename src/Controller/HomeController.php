@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
 
+
     /**
      * @Route ("/hello/{prenom}/age/{age}", name= "hello")
      * @Route ("/hello", name= "hello_base")
@@ -25,8 +26,8 @@ class HomeController extends AbstractController
         return $this->render(
             'hello.html.twig',
             [
-                'prenom'=> $prenom,
-                'age'=> $age
+                'prenom' => $prenom,
+                'age' => $age
             ]
         );
     }
@@ -38,12 +39,10 @@ class HomeController extends AbstractController
     {
         return $this->render(
             'home.html.twig',
-            [ 'title' => "Bonjour les amis",
+            [
+                'title' => "Bonjour les amis",
                 'age' => 12
             ]
         );
     }
-
 }
-
-?>
