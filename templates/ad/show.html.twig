@@ -43,12 +43,15 @@
 								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
 							</div>
 							<div class="carousel-inner">
-								{% for image in ad.images %}
-									<div class="carousel-item active">
-										<img src="{{ image.url }}" class="d-block w-100" alt="...">
-									</div>
-								{% endfor %}
 
+
+								{% for image in ad.images %}
+
+									<div class="carousel-item active">
+										<img src="{{ image.url }}" class="d-block w-100" alt="">
+									</div>
+
+								{% endfor %}
 							</div>
 							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
 								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
