@@ -13,7 +13,7 @@ class AdController extends AbstractController
 {
 
     /**
-     * @Route("/ads", name="ad_index")
+     * @Route("/ads", name="ads_index")
      */
     public function index(AdRepository $repo)
     {
@@ -26,6 +26,18 @@ class AdController extends AbstractController
         ]);
     }
 
+
+    /**
+     * Création de formulaires
+     * @Route ("/ads/new", name="ads_create")
+     *
+     * @return Response 
+     */
+    public function create()
+    {
+        return $this->render('ad/new.html.twig');
+    }
+
     /**
      * Pour afficher une annonce 
      * 
@@ -34,11 +46,8 @@ class AdController extends AbstractController
      * @return  Response
      */
 
-    public function show($slug, AdRepository $repo)
+    public function show(Ad $ad)
     {
-        //récupération des annonces 
-        $ad = $repo->findOneBySlug($slug);
-
         return $this->render('ad/show.html.twig', [
             'ad' => $ad
         ]);
