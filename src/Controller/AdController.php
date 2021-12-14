@@ -49,6 +49,10 @@ class AdController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($ad);
             $manager->flush();
+
+            return $this->redirectToRoute('ads_show', [
+                'slug' => $ad->getSlug()
+            ]);
         }
 
 
