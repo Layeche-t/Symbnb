@@ -21,12 +21,12 @@ class AppFixtures extends Fixture
             $title = $faker->sentence();
             $coverImage = "https://picsum.photos/1200/350?random=" . mt_rand(1, 5000);;
             $introduction = $faker->paragraph(2);
-            $content = '<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>';
+            $contents = '<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>';
 
             $ad->setTitle($title)
                 ->setCoverImage($coverImage)
                 ->setIntroduction($introduction)
-                ->setContent($content)
+                ->setContents($contents)
                 ->setPrice(mt_rand(40, 200))
                 ->setRooms(mt_rand(1, 6));
 
