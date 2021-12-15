@@ -27,6 +27,7 @@
 	<p>Vous pouvez ajouter vos propores images !</p>
 
 	{{form_widget(form)}}
+	<input type="hidden" id="widgets-counter" value="0">
 
 	<div class="form-group">
 		<button type="button" id="add-image" class="btn btn-primary">Ajouter une image</button>
@@ -66,9 +67,12 @@
 	<script>
 		$('#add-image').click(function () {
 
-const index = $('#ad_images div.form-group').length;
+const index = + $('#widgets-counter').val();
+
 const tmpl = $('#ad_images').data('prototype').replace(/__name__/g, index);
 $('#ad_images').append(tmpl);
+
+$('#widgets-counter').val(index + 1);
 
 handleDeleteButtons();
 
