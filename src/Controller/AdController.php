@@ -46,12 +46,18 @@ class AdController extends AbstractController
         $form->handleRequest($request);
 
         // alert 
-
+        $manager = $this->getDoctrine()->getManager();
 
         // insert data in database
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $manager = $this->getDoctrine()->getManager();
+
+            foreach ($ad->getImages() as $image) {
+                $image->setAd($ad);
+                $manager->persist($image);
+            }
+
+
             $manager->persist($ad);
             $manager->flush();
 
