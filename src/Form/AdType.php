@@ -23,16 +23,17 @@ class AdType extends AbstractType
      *
      * @param [string] $label
      * @param [string] $placeholder
+     * @param array $options
      * @return array
      */
-    private function getGonfiguration($label, $placeholder)
+    private function getGonfiguration($label, $placeholder, $options = [])
     {
-        return [
+        return array_merge([
             'label' => $label,
             'attr' => [
                 'placeholder' => $placeholder
             ]
-        ];
+        ], $options);
     }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -45,7 +46,9 @@ class AdType extends AbstractType
             ->add(
                 'slug',
                 TextType::class,
-                $this->getGonfiguration("Adresse web", "Tapez votre adress web")
+                $this->getGonfiguration("Adresse web", "Tapez votre adress web (automatique)", [
+                    'required' => false
+                ])
             )
             ->add(
                 'coverImage',
@@ -60,11 +63,7 @@ class AdType extends AbstractType
             ->add(
                 'contents',
                 TextareaType::class,
-                $this->getGonfiguration("Annonce détaillée", "Donnez plus de description", [
-                    'allow_add'    => true,
-                    'by_reference' => false,
-                    'prototype'     => true,
-                ])
+                $this->getGonfiguration("Annonce détaillée", "Donnez plus de description")
             )
             ->add(
                 'rooms',
