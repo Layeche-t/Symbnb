@@ -4,15 +4,28 @@ namespace App\DataFixtures;
 
 use App\Entity\Ad;
 use Faker\Factory;
-use App\Entity\Image;
 use App\Entity\User;
+use App\Entity\Image;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+
+    private $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
+
     public function load(ObjectManager $manager): void
     {
+
+
+
         $faker = Factory::create('FR-fr');
 
         $users = [];
@@ -30,14 +43,16 @@ class AppFixtures extends Fixture
 
             $pircture .= ($genre == 'male' ? 'men/' : 'women/') . $pirctureId;
 
+            $hash = $this->encoder->encodePassword($user, 'password');
 
             $user->setFirstName($faker->firstname($genre))
                 ->setLastName($faker->lastname($genre))
                 ->setEmail($faker->email)
                 ->setIntroduction($faker->sentence())
                 ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>')
-                ->setHash('password')
+                ->setHash($hash)
                 ->setPircture($pircture);
+
 
             $manager->persist($user);
             $users[] = $user;
