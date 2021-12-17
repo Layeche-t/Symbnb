@@ -89,7 +89,6 @@ class Ad
      * 
      * @return void
      */
-
     public function initializeSlug()
     {
         if (empty($this->slug)) {

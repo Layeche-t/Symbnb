@@ -28,7 +28,7 @@ class AppFixtures extends Fixture
                 ->setHash('password');
 
             $manager->persist($user);
-            $users[] = $user[mt_rand(0, count($users) - 1)];
+            $users[] = $user;
         }
 
         // for entity Ad
@@ -40,12 +40,15 @@ class AppFixtures extends Fixture
             $introduction = $faker->paragraph(2);
             $contents = '<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>';
 
+            $user = $users[mt_rand(0, count($users) - 1)];
+
             $ad->setTitle($title)
                 ->setCoverImage($coverImage)
                 ->setIntroduction($introduction)
                 ->setContents($contents)
                 ->setPrice(mt_rand(40, 200))
-                ->setRooms(mt_rand(1, 6));
+                ->setRooms(mt_rand(1, 6))
+                ->setAuthor($user);
 
             // for entity image
             for ($j = 1; $j <= mt_rand(2, 5); $j++) {
