@@ -21,10 +21,16 @@ security:
             security: false
         main:
             lazy: true
+
             provider: in_database
+
             form_login:
                 login_path: account_login
                 check_path: account_login
+
+            logout:
+                path: account_logout
+                target: account_login
 
 
 # users_in_memory
