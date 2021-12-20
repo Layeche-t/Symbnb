@@ -8,10 +8,16 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ * fields={"email"},
+ * message="Une autre utilisateur s'est déja inscrit !"
+ * )
  */
 class User implements UserInterface
 {
@@ -24,21 +30,25 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez taper votre nom de famille")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez taper votre prénom")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Veuillez taper votre email")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Url(message="Veuillez donner une URL valide pour votre avatar!")
      */
     private $pircture;
 
@@ -49,11 +59,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5, max=255, minMessage="Votre intro doit faire au min 5 cara !")
      */
     private $introduction;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=5, max=255, minMessage="Votre description doit faire au min 5 cara !", maxMessage="")
      */
     private $description;
 
@@ -233,12 +245,12 @@ class User implements UserInterface
     {
     }
 
+    public function eraseCredentials()
+    {
+    }
+
     public function getUsername()
     {
         return $this->email;
-    }
-
-    public function eraseCredentials()
-    {
     }
 }

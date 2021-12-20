@@ -62,6 +62,13 @@ class AccountController extends AbstractController
 
             $manager->persist($user);
             $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Votre compte bien été crée ! Vous pouvez maintenant vous connecter !"
+            );
+
+            return $this->redirectToRoute('account_login');
         }
 
 
