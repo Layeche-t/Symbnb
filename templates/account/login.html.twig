@@ -11,10 +11,14 @@
 		<div class="col-md-6">
 			<div class="bg-light py-3 px-3">
 				<h1>Connectez vous !</h1>
+
+				{%if hasError %}
+					<div class="alert alert-danger">Une erreur est survenue, le nom d'utilisateur ou le nom du mot de passe est invalide</div>
+				{% endif %}
 				<form action="{{ path('account_login') }}" method="post">
 					<div class="form-groupe">
 						<label for="email">Email</label>
-						<input type="text" class="form-control" name='_username' id='email' placeholder="Adresse email..." required>
+						<input type="text" class="form-control" name='_username' id='email' placeholder="Adresse email..." value="{{username}}" required>
 					</div>
 
 					<div class="form-groupe">
