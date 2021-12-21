@@ -24,3 +24,8 @@ img.avatar-medium{
     max-width: 70px;
     max-height: 70px;
 }
+
+img.avatar-mini{
+    max-width: 30px;
+    max-height: 30px;
+}
