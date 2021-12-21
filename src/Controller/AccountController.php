@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bridge\Doctrine\ManagerRegistry as DoctrineManagerRegistry;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -130,6 +131,8 @@ class AccountController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (!password_verify($passordUpdate->getOldPassword(), $user->getHash())) {
+                //une erreur personelle
+                $form->get('OldPassword')->addError(new FormError("le mot de passe que vous avez tapé n'est pas correct"));
             } else {
                 $newPassword = $passordUpdate->getNewPassword();
                 $hash = $encoder->hashPassword($user, $newPassword);
