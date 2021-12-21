@@ -116,11 +116,39 @@ class AccountController extends AbstractController
      * Pour ce  connecter 
      * @Route("/account/password-update", name="account_password")
      */
-    public function updatePassword()
+    public function updatePassword(Request $request, UserPasswordHasherInterface  $encoder)
     {
         $passordUpdate = new PasswordUpdate();
 
+        $user = $this->getUser();
+
         $form = $this->createForm(PasswordUpdateType::class, $passordUpdate);
+
+        $form->handleRequest($request);
+
+        $manager = $this->getDoctrine()->getManager();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!password_verify($passordUpdate->getOldPassword(), $user->getHash())) {
+            } else {
+                $newPassword = $passordUpdate->getNewPassword();
+                $hash = $encoder->hashPassword($user, $newPassword);
+
+                $user->setHash($hash);
+
+                $manager->persist($user);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    "Votre mot de passe a bien été modifié !"
+                );
+
+                return $this->redirectToRoute('homepage');
+            }
+        }
+
+
         return $this->render('account/password.html.twig', [
             'form' => $form->createView()
         ]);
