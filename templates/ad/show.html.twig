@@ -70,12 +70,16 @@
 						<div class="row">
 
 							<div class="col-3 mt-2">
-								<img src="{{a.pircture}}" class="avatar avatar-medium" alt="{{a.FullName}} ">
+								<a href="{{path('user_show', {'slug': a.slug}) }}">
+									<img src="{{a.pircture}}" class="avatar avatar-medium" alt="{{a.FullName}} ">
+								</a>
 							</div>
 							<div class="col">
-								<h3>
-									{{a.FullName}}
-								</h3>
+								<a href="{{path('user_show', {'slug': a.slug}) }}">
+									<h3>
+										{{a.FullName}}
+									</h3>
+								</a>
 								<button type="button" class="btn btn-primary mb-3">
 									{{ a.ads | length }}
 									annonces
