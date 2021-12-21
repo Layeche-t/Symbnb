@@ -4,13 +4,17 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\AccountType;
+use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
+use App\Form\PasswordUpdateType;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bridge\Doctrine\ManagerRegistry as DoctrineManagerRegistry;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AccountController extends AbstractController
 {
@@ -46,19 +50,17 @@ class AccountController extends AbstractController
      *
      * @return Respons
      */
-    public function register(Request $request, UserPasswordEncoderInterface $encoder)
+    public function register(Request $request, UserPasswordHasherInterface  $encoder)
     {
         $user = new User();
-
+        $manager = $this->getDoctrine()->getManager();
         $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
 
-        $manager = $this->getDoctrine()->getManager();
-
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hash = $encoder->encodePassword($user, $user->getHash());
+            $hash = $encoder->hashPassword($user, $user->getHash());
             $user->setHash($hash);
 
             $manager->persist($user);
@@ -106,6 +108,20 @@ class AccountController extends AbstractController
         }
 
         return $this->render('account/profile.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /** 
+     * Pour ce  connecter 
+     * @Route("/account/password-update", name="account_password")
+     */
+    public function updatePassword()
+    {
+        $passordUpdate = new PasswordUpdate();
+
+        $form = $this->createForm(PasswordUpdateType::class, $passordUpdate);
+        return $this->render('account/password.html.twig', [
             'form' => $form->createView()
         ]);
     }
