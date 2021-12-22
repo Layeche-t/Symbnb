@@ -142,4 +142,26 @@ class AdController extends AbstractController
             'ad' => $ad
         ]);
     }
+
+    /**
+     * @Route("/ads/{slug}/delete", name="ads_delete")
+     * @Security("is_granted('ROLE_USER') and user == ad.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette réservation")
+     *
+     * @param Ad $ad
+     * @return Response
+     */
+    public function delete(Ad $ad)
+    {
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($ad);
+        $manager->flush($ad);
+
+        $this->addFlash(
+            'success',
+            "l'annonce a bien été supprimé"
+        );
+
+        return $this->redirectToRoute("ads_index");
+    }
 }
