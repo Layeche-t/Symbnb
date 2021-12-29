@@ -118,7 +118,7 @@ class Ad
 
             $resultat = range(
                 $booking->getStartDate()->getTimestamp(),
-                $booking->getStartEnd()->getTimestamp(),
+                $booking->getEndDate()->getTimestamp(),
                 24 * 60 * 60
             );
 
