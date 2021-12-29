@@ -6,6 +6,8 @@ use App\Repository\BookingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function PHPUnit\Framework\returnSelf;
+
 /**
  * @ORM\Entity(repositoryClass=BookingRepository::class)
  * @ORM\HasLifecycleCallbacks()
@@ -75,6 +77,46 @@ class Booking
         }
     }
 
+    public function isBookablaDtes()
+    {
+        //
+        $notAvailableDays = $this->ad->getNotAvailableDays();
+        //
+        $bokingDays = $this->getDays();
+
+        $formatDay = function ($day) {
+            return $day->formt('Y-m-d');
+        };
+
+        $days         = array_map($formatDay, $bokingDays);
+        $notAvailable = array_map($formatDay,  $notAvailableDays);
+
+        foreach ($days as $day) {
+            if (array_search($day, $notAvailable) !== false) return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array 
+     */
+    public function getDays()
+    {
+        $resultat = range(
+            $this->startDate->getTimestamp(),
+            $this->endDate->getTimestamp(),
+            24 * 60 * 60
+        );
+
+        $days = array_map(function ($dayTimestamp) {
+            return new \DateTime(date('Y-m-d', $dayTimestamp));
+        },  $resultat);
+
+        return $days;
+    }
 
     public function getDuration()
     {
