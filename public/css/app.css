@@ -29,3 +29,7 @@ img.avatar-mini{
     max-width: 30px;
     max-height: 30px;
 }
+
+.datepicker table tr td.disabled{
+    color: firebrick !important;
+}
