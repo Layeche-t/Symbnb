@@ -36,12 +36,14 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention, la date d'arrivé doit être au bon format ! ")
+     * @Assert\Greaterthan("today", "La date d'arrivée n'est pas valide")
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention, la date de départ doit être au bon format ! ")
+     * @Assert\Greaterthan(propertyPath="startDate")
      */
     private $endDate;
 
