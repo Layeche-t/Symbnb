@@ -26,6 +26,7 @@ class BookingController extends AbstractController
         $manager = $this->getDoctrine()->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $user = $this->getUser();
 
             $booking->setBooker($user)
