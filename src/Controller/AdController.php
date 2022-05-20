@@ -26,7 +26,7 @@ class AdController extends AbstractController
 
 
         return $this->render('ad/index.html.twig', [
-            'ads' => $ads,
+            'ads' => $ads
         ]);
     }
 
@@ -75,7 +75,7 @@ class AdController extends AbstractController
     }
 
     /**
-     * Permet d'afficher un formulaire de modification
+     * Permet d'afficher un formulaire de modification de profile
      * 
      * @Route("/ads/{slug}/edit", name="ads_edit")
      * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="cette annonce ne vous appartient pas")
@@ -141,14 +141,14 @@ class AdController extends AbstractController
      * @Security("is_granted('ROLE_USER') and user == ad.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette réservation")
      *
      * @param Ad $ad
+     * @param ObjectManger $manager
      * @return Response
      */
     public function delete(Ad $ad, EntityManagerInterface $manager)
     {
 
-        $manager = $this->getDoctrine()->getManager();
         $manager->remove($ad);
-        $manager->flush($ad);
+        $manager->flush();
 
         $this->addFlash(
             'success',
