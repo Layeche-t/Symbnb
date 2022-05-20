@@ -4,9 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Ad;
 use App\Form\AdType;
-use App\Entity\Image;
 use App\Repository\AdRepository;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,22 +32,19 @@ class AdController extends AbstractController
 
 
     /**
-     * Création de formulaires
+     * Création de d'annonces
      * @Route ("/ads/new", name="ads_create")
-     * @IsGranted()
+     * @IsGranted("ROLE_USER")
      *
      * @return Response 
      */
-    public function create(Request $request)
+    public function create(Request $request, EntityManagerInterface $manager)
     {
         $ad = new Ad();
 
         $form = $this->createForm(AdType::class, $ad);
 
         $form->handleRequest($request);
-
-        // alert 
-        $manager = $this->getDoctrine()->getManager();
 
         // insert data in database
         if ($form->isSubmitted() && $form->isValid()) {
@@ -73,7 +69,6 @@ class AdController extends AbstractController
             ]);
         }
 
-
         return $this->render('ad/new.html.twig', [
             'form' => $form->createView()
         ]);
@@ -87,14 +82,12 @@ class AdController extends AbstractController
      * 
      * @return Respons
      */
-    public function edit(Ad $ad, Request $request)
+    public function edit(Ad $ad, Request $request, EntityManagerInterface $manager)
     {
 
         $form = $this->createForm(AdType::class, $ad);
 
         $form->handleRequest($request);
-
-        $manager = $this->getDoctrine()->getManager();
 
         // insert data in database
         if ($form->isSubmitted() && $form->isValid()) {
@@ -150,7 +143,7 @@ class AdController extends AbstractController
      * @param Ad $ad
      * @return Response
      */
-    public function delete(Ad $ad)
+    public function delete(Ad $ad, EntityManagerInterface $manager)
     {
 
         $manager = $this->getDoctrine()->getManager();
