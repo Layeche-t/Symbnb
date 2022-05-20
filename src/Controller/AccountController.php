@@ -9,6 +9,7 @@ use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
 use Symfony\Component\Form\FormError;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,10 +53,9 @@ class AccountController extends AbstractController
      *
      * @return Respons
      */
-    public function register(Request $request, UserPasswordHasherInterface  $encoder)
+    public function register(Request $request, UserPasswordHasherInterface  $encoder, EntityManagerInterface $manager)
     {
         $user = new User();
-        $manager = $this->getDoctrine()->getManager();
         $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
@@ -89,14 +89,12 @@ class AccountController extends AbstractController
      * @return Response
      */
 
-    public function profile(Request $request)
+    public function profile(Request $request, EntityManagerInterface $manager)
     {
         $user = $this->getUser();
         $form = $this->createForm(AccountType::class, $user);
 
         $form->handleRequest($request);
-
-        $manager = $this->getDoctrine()->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -120,7 +118,7 @@ class AccountController extends AbstractController
      * @Route("/account/password-update", name="account_password")
      * IsGranted("ROLE_USER")
      */
-    public function updatePassword(Request $request, UserPasswordHasherInterface  $encoder)
+    public function updatePassword(Request $request, UserPasswordHasherInterface  $encoder, EntityManagerInterface $manager)
     {
         $passordUpdate = new PasswordUpdate();
 
@@ -130,7 +128,6 @@ class AccountController extends AbstractController
 
         $form->handleRequest($request);
 
-        $manager = $this->getDoctrine()->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (!password_verify($passordUpdate->getOldPassword(), $user->getHash())) {
