@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdController extends AbstractController
 {
 
+    //this class for new challang
     /**
      * @Route("/ads", name="ads_index")
      */
@@ -23,7 +24,6 @@ class AdController extends AbstractController
     {
 
         $ads = $repo->findAll();
-
 
         return $this->render('ad/index.html.twig', [
             'ads' => $ads
