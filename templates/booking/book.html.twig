@@ -28,9 +28,9 @@
 					{{form_row(form.endDate)}}
 				</div>
 			</div>
-			<h4>Montant du séjour :
-				<span id="amount"></span>&euro;</h4>
-			<span id="days">0</span>
+			<h4>Montant du séjour  :
+				<span id="amount"></span>...&euro;</h4>
+			<span id="days"></span>
 			nuit(s) à
 			{{ad.price}}
 			/ nuit
@@ -56,25 +56,24 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 	<script>
+
 		$(document).ready(function () {
 $('#booking_startDate, #booking_endDate').datepicker({
+
 format: 'dd/mm/yyyy',
 datesDisabled: [{% for day in ad.notAvailableDays %}"{{ day.format('d/m/Y') }}",{% endfor %}],
 
 startDate: new Date()
 
 });
+
 $('#booking_startDate', '#booking_endDate').on('change', calculateAmount);
 });
-	</script>
 
-	<script>
-		function calculateAmount() {
-const endDate = new Date($('#booking_endDate').val().replace(/(\d+)\/(\d+)\/(/d {
-4
-}) /, '$3-$2-$1')
-);
-const startDate = new Date($('#booking_startDate').val());
+function calculateAmount() {
+const endDate = new Date($('#booking_endDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/, '$3-$2-$1'));
+const startDate = new Date($('#booking_startDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/, '$3-$2-$1'));
+
 
 if (startDate && endDate && startDate < endDate) {
 

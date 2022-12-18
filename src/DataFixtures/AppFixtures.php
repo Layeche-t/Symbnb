@@ -40,7 +40,7 @@ class AppFixtures extends Fixture
             ->setHash($this->encoder->encodePassword($adminUser, 'password'))
             ->setPircture('https://randomuser.me/api/portraits/women/55.jpg')
             ->setIntroduction($faker->sentence())
-            ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(3)) . '</p>')
+            ->setDescription($faker->sentence())
             ->addUserRole($adminRole);
 
         $manager->persist($adminUser);
